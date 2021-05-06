@@ -1,15 +1,33 @@
 <?php
 
-$cookie_key = 'show_count';
+$first_number = $_POST['first'];
+$second_number = $_POST['second'];
+$operation = $_POST['operations'];
 
-if (isset($_COOKIE['show_count'])) {
-    $current = ++$_COOKIE['show_count'];
-    setcookie($cookie_key, $current);
+$result = null;
+
+if (is_numeric($first_number) && is_numeric($second_number)) {
+    switch ($operation) {
+        case '+':
+            $result = $first_number + $second_number;
+            break;
+        case '-':
+            $result = $first_number - $second_number;
+            break;
+        case '*':
+            $result = $first_number * $second_number;
+            break;
+        case '/':
+            if ($second_number == 0) {
+                $result = 'На ноль делить нельзя';
+            } else {
+                $result = number_format($first_number / $second_number, 2);
+            }
+            break;
+    }
 } else {
-    setcookie($cookie_key, 0);
+    $result = 'Введите число';
 }
-
-$show_count = $_COOKIE['show_count'];
 
 ?>
 
@@ -23,7 +41,24 @@ $show_count = $_COOKIE['show_count'];
     <title>Document</title>
 </head>
 <body>
-<img src="image.php" alt="Собака">
-<p>Файл был показан <?=$show_count?> раз</p>
+<form name="calculator" method="post" action="/">
+    <label for="first">
+        Введите первое число: <input type="text" name="first" id="first" value="<?=empty($first_number) ? 0 : $first_number?>" maxlength="10">
+    </label>
+    <label for="second">
+        Введите второе число: <input type="text" name="second" id="second" value="<?=empty($second_number) ? 0 : $second_number?>" maxlength="10">
+    </label>
+    <br><br>
+    <span>Выберите операцию:</span>
+    <select name="operations" id="calc">
+        <option>+</option>
+        <option>-</option>
+        <option>*</option>
+        <option>/</option>
+    </select>
+    <br><br>
+    <input type="submit" value="Посчитать">
+    <?php if ($result) { ?><p>Результат: <?= $result ?></p><?php } ?>
+</form>
 </body>
 </html>
