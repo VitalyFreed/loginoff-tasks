@@ -24,6 +24,9 @@ if (is_numeric($first_number) && is_numeric($second_number)) {
                 $result = number_format($first_number / $second_number, 2);
             }
             break;
+        default:
+            $result = '';
+            break;
     }
 } else {
     $result = 'Введите число';
@@ -41,12 +44,12 @@ if (is_numeric($first_number) && is_numeric($second_number)) {
     <title>Document</title>
 </head>
 <body>
-<form name="calculator" method="post" action="/">
+<form name="calculator" method="post" action='<?php $_SERVER['DOCUMENT_ROOT'] ?>'>
     <label for="first">
-        Введите первое число: <input type="text" name="first" id="first" value="<?=empty($first_number) ? 0 : $first_number?>" maxlength="10">
+        Введите первое число: <input type="text" name="first" id="first" value="<?=$first_number?>" maxlength="10">
     </label>
     <label for="second">
-        Введите второе число: <input type="text" name="second" id="second" value="<?=empty($second_number) ? 0 : $second_number?>" maxlength="10">
+        Введите второе число: <input type="text" name="second" id="second" value="<?=$second_number?>" maxlength="10">
     </label>
     <br><br>
     <span>Выберите операцию:</span>
@@ -58,7 +61,7 @@ if (is_numeric($first_number) && is_numeric($second_number)) {
     </select>
     <br><br>
     <input type="submit" value="Посчитать">
-    <?php if ($result) { ?><p>Результат: <?= $result ?></p><?php } ?>
+    <?php if ($result !== null) { ?><p>Результат: <?=$result?></p><?php } ?>
 </form>
 </body>
 </html>
